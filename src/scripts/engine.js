@@ -10,6 +10,7 @@ const state = {
     hitPosition: 0,
     result: 0,
     currentTime: 60,
+    oldRandomSquare: '10',
   },
   actions: {
     timerId: setInterval(randomSquare, 1000),
@@ -40,10 +41,18 @@ function randomSquare() {
     square.classList.remove("enemy")
   })
 
-  let randomNumber = Math.floor(Math.random() * 9)
-  let randomSquare = state.view.squares[randomNumber]
+  const base = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+  const indexBase = base.indexOf(state.values.oldRandomSquare)
+
+  if (indexBase !== -1) {
+    base.splice(indexBase, 1)
+  }
+  let randomNumber = Math.floor(Math.random() * base.length)
+  let randomSquare = state.view.squares[Number(base[randomNumber]) - 1]
   randomSquare.classList.add("enemy")
   state.values.hitPosition = randomSquare.id
+  state.values.oldRandomSquare = randomSquare.id
+  console.log(state.values.oldRandomSquare)
 }
 
 function addListenerHitbox() {
